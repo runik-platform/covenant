@@ -1,0 +1,14 @@
+apiVersion: v2
+name: covenant
+version: 0.10.0
+description: Single-instance deterministic IAM renderer for Runik
+home: https://github.com/runik-platform
+sources:
+  - https://github.com/runik-platform/runik-platform
+annotations:
+  artifacthub.io/license: AGPL-3.0-only
+maintainers:
+  - name: namen malkav
+    email: namenmalkav@gmail.com
+  - name: laaledesiempre
+    email: laaledesiempre@disroot.org

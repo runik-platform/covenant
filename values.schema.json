@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "minLength": 1 },
+    "namespace": { "type": "string", "minLength": 1 },
+    "applicationSet": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "repository": { "type": "string", "minLength": 1 },
+            "revision": { "type": "string", "minLength": 1 },
+            "path": { "type": "string", "minLength": 1 },
+            "chart": { "type": "string", "minLength": 1 }
+          },
+          "required": ["repository", "revision"],
+          "additionalProperties": false
+        },
+        "applicationNamespace": { "type": "string", "minLength": 1 },
+        "project": { "type": "string", "minLength": 1 },
+        "syncWave": { "type": ["string", "integer"] },
+        "destination": { "type": "object" },
+        "syncPolicy": { "type": "object" },
+        "ignoreDifferences": { "type": "array" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

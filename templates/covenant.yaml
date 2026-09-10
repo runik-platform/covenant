@@ -1,0 +1,25 @@
+{{/* SPDX-License-Identifier: AGPL-3.0-only */}}
+{{- $root := . -}}
+{{- $internal := default dict (get $root.Values "_covenant") -}}
+{{- if $internal.manifests -}}
+{{ required "covenant: internal manifests are required" ($internal.manifests | b64dec) }}
+{{- else -}}
+{{- $plan := include "covenant.compile" $root | fromJson -}}
+
+{{/* Atomic glyphs discover only the provider instances resolved for this realm. */}}
+{{- $resolvedLexicon := dict -}}
+{{- range $providerRef, $provider := $plan.providers -}}
+  {{- $_ := set $resolvedLexicon (required (printf "covenant: resolved provider %q requires name" $providerRef) $provider.name) (deepCopy $provider) -}}
+{{- end -}}
+{{- $_ := set $root.Values "lexicon" $resolvedLexicon -}}
+{{- if not $root.Values.spellbook -}}{{- $_ := set $root.Values "spellbook" (dict "name" $plan.book) -}}{{- end -}}
+{{- if not $root.Values.chapter -}}{{- $_ := set $root.Values "chapter" (dict "name" "identity") -}}{{- end -}}
+
+{{- range $intent := required "covenant: compiled intents are required" $plan.intents -}}
+  {{- if not (hasKey $intent "principalShard") -}}
+{{ include "covenant.renderIntent" (list $root $intent $plan.providers) }}
+  {{- end -}}
+{{- end -}}
+
+{{ include "covenant.principalApplicationSet" (list $root $plan) }}
+{{- end -}}
