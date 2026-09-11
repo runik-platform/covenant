@@ -1,6 +1,6 @@
 apiVersion: v2
 name: covenant
-version: 0.10.0
+version: 0.10.1
 description: Single-instance deterministic IAM renderer for Runik
 home: https://github.com/runik-platform
 sources:
