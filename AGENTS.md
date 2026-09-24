@@ -1,4 +1,4 @@
-# CLAUDE.md — Covenant
+# AGENTS.md — Covenant
 
 This file contains Covenant implementation rules. The public book and
 application contract is defined only in [docs/contracts.md](docs/contracts.md).
@@ -89,3 +89,18 @@ build steps. Edit reusable glyph behavior only in Runik's canonical
   complete fixture, parses it, and verifies resource invariants without a
   cluster. Do not use `helm lint` to validate intentionally vendored template
   libraries.
+
+## Development and publication
+
+Forgejo `runik/covenant` is the source of truth. Develop from
+`origin/upstream`, push a topic branch to Forgejo, and merge a reviewed PR into
+`upstream`; never develop on or push directly to the generated GitHub repo.
+Every upstream merge automatically triggers Runik component synchronization,
+so do not update the aggregate gitlink manually.
+
+For a release, first merge the intended version in `Chart.yaml`, then publish a
+Forgejo Release at the current `upstream` head with the exact tag
+`v<Chart.yaml.version>`. A raw tag push does not publish. Tarot creates the clean
+GitHub branch and tag; GitHub Actions creates the Release page. Covenant is
+Git-only, produces no OCI artifact, and publication must preserve
+`bookrack -> ../bookrack` as a Git symlink.

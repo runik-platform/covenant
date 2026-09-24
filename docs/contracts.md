@@ -279,10 +279,32 @@ The role catalog is shared. Each realm has a separate client entry. A second
 organization uses another IAM book and selects its own client entry; principals
 and bindings are never shared across realms.
 
-Supported client types are `oidc`, `saml`, and `serviceAccount`. A SAML client
-may declare a signing certificate, while Covenant obtains the issuer from
-Lexicon. The certificate and its Secret are created in the application
-namespace; `certificate.secretName` may override the deterministic default.
+Supported client types are `oidc`, `saml`, and `serviceAccount`. A
+`serviceAccount` client disables browser and direct-access flows and may grant
+explicit Keycloak client roles to its internal service identity through
+`serviceAccountRoles`:
+
+```yaml
+covenant:
+  key: identity-reader
+  clients:
+    example:
+      type: serviceAccount
+      clientId: identity-reader
+      webUrl: https://identity.example.test
+      serviceAccountRoles:
+        - clientId: realm-management
+          roles: [view-realm, view-users]
+```
+
+These grants apply to the Keycloak service identity, not to application users
+or Covenant principals. Prefer the minimum read-only roles required by the
+consumer and never use `realm-admin` when narrower roles suffice.
+
+A SAML client may declare a signing certificate, while Covenant obtains the
+issuer from Lexicon. The certificate and its Secret are created in the
+application namespace; `certificate.secretName` may override the deterministic
+default.
 The Keycloak operator does not support Secret references in SAML client
 attributes, so the application consumes this Secret and any public certificate
 that Keycloak must trust has to be configured through a separately supported
