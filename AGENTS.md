@@ -100,7 +100,7 @@ so do not update the aggregate gitlink manually.
 
 For a release, first merge the intended version in `Chart.yaml`, then publish a
 Forgejo Release at the current `upstream` head with the exact tag
-`v<Chart.yaml.version>`. A raw tag push does not publish. Tarot creates the clean
+`v<Chart.yaml.version>`. A raw tag push does not publish. The repository publication Workflow creates the clean
 GitHub branch and tag; GitHub Actions creates the Release page. Covenant is
 Git-only, produces no OCI artifact, and publication must preserve
 `bookrack -> ../bookrack` as a Git symlink.
